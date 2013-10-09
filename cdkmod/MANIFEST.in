@@ -1,0 +1,3 @@
+recursive-include cdk/data *
+include README.rst
+include LICENSE
