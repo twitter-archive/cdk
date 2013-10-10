@@ -28,18 +28,22 @@ CDK_DIR=$( cd "$( dirname "$0" )" && pwd )
 eval ${CDK_DIR}/external/asciidoc/asciidoc.py -f ${CDK_DIR}/external/asciidoc/asciidoc.conf ${attrs[@]} $@
 """
 
-data_dir = join(abspath(dirname(__file__)),  "data")
-asciidoc_dir = join(data_dir, "asciidoc-8.6.8")
 
 def main():
     """Entry point for stitching together our custom asciidoc conf, deckjs
     conf and plugins.
 
     """
+    data_dir = join(abspath(dirname(__file__)),  "data")
+    custom_dir = join(abspath(dirname(__file__)),  "custom")
+    asciidoc_dir = join(data_dir, "asciidoc-8.6.8")
+    
     
     # Setup asciidoc command we want to run
-    cmd = ("%s/asciidoc.py -b deckjs -a deckjs_theme=twitter -a data-uri "
-           "-a iconsdir='%s/images/icons' -a iconss") % (asciidoc_dir, data_dir)
+    cmd = ("%(asciidoc_dir)s/asciidoc.py -b deckjs "
+           "-a deckjs_theme=twitter -a data-uri "
+           "-f %(custom_dir)s/asciidoc.conf "
+           "-a iconsdir='%(data_dir)s/images/icons' -a icons") % locals()
     cmd = cmd.split()
     
     
