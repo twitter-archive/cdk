@@ -1,0 +1,7 @@
+language: python
+python:
+  - "3.3"
+# command to install dependencies
+install: "make getdata && pip install -r requirements.txt --use-mirrors"
+# command to run tests
+script: make test
