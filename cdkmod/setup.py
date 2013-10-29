@@ -23,10 +23,10 @@ setup(
     packages=find_packages(exclude=('tests', 'docs')),
     include_package_data=True,
     entry_points = {'console_scripts': ['cdk = cdk:main']},
-    install_requires=['docopt', 'schema'],
+    install_requires=['docopt', 'pygments'],
     classifiers=[
         "Development Status :: 3 - Alpha",
         "Topic :: Utilities",
-        "License :: OSI Approved :: BSD License",
+        "License :: OSI Approved :: Apache Software License"
     ]
 )
