@@ -28,16 +28,17 @@ Options:
 
 import subprocess, zipfile
 from os.path import dirname, basename, join, abspath, isfile, isdir, expanduser
-from os import mkdir, unlink
+from os import mkdir, unlink, listdir
 from shutil import copy
 import ConfigParser as cp
 
 from docopt import docopt
 
 LOCATION = abspath(dirname(__file__))
-
 PREFS_DIR = expanduser("~/.cdk")
 PREFS_FILE = join(PREFS_DIR, "prefs")
+THEMES_DIR = join(LOCATION, "custom", "deck.js", "themes")
+
 
 def set_default_theme(theme):
     """
@@ -89,14 +90,13 @@ def install_theme(path_to_theme):
     pref_init()
     # cp the file
     filename = basename(path_to_theme)
-    themes = join(LOCATION, "custom", "deck.js", "themes")
-    dest = join(themes, filename)
+    dest = join(THEMES_DIR, filename)
     copy(path_to_theme, dest)
     # unzip
     zf = zipfile.ZipFile(dest)
     # should make sure zipfile contains only themename folder which doesn't conflict
     # with existing themename. Or some kind of sanity check
-    zf.extractall(themes) # plus this is a potential security flaw pre 2.7.4
+    zf.extractall(THEMES_DIR) # plus this is a potential security flaw pre 2.7.4
     # remove the copied zipfile
     unlink(dest)
 
@@ -150,7 +150,10 @@ def main():
     # Am I going to need validation? No Schema for the moment...
     if args['FILE']:
         # Great! Run asciidoc with appropriate flags
-        cmd = create_command(pick_theme(args['--theme']), args['--bare'])
+        theme = pick_theme(args['--theme'])
+        if theme not in listdir(THEMES_DIR):
+            exit('Selected theme "%s" not found. Check ~/.cdk/prefs' % theme)
+        cmd = create_command(theme, args['--bare'])
         run_command(cmd, args)
     # other commands
     elif args['--install-theme']:
