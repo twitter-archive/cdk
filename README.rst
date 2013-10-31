@@ -4,7 +4,7 @@ CDK Documentation
 Using `cdk` write documents in asciidoc and produce elegant single-file slidedecks as
 html.
 
-Please see the docs at https://readthedocs.org/projects/cdk/
+Please see the docs at http://cdk.readthedocs.org/en/latest/
 
 Simple installation/usage::
   
