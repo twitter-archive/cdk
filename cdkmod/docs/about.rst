@@ -1,7 +1,7 @@
 About
 =====
 
-tl;dr - using `cdk` to write documents in asciidoc and produce elegant single-file slidedecks as
+tl;dr - using `cdk` write documents in asciidoc and produce elegant single-file slidedecks as
 html.
 
 `cdk` is a Python progam to more easily stitch together `Asciidoc
