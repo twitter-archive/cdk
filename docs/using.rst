@@ -3,19 +3,25 @@ Using `cdk`
 
 Author an asciidoc document. For example make a file `hello.asc` ::
 
-  Slide 1
-  =======
+    = My Presentation
 
-  This is a slide
+    == Slide 1
 
-  Slide 2
-  =======
+    Some of my favorite colors:
 
-  And another. With a code block:
-  
-  ----
-  >>> print "hello World"
-  ----
+    [options="incremental"]
+    * red
+    * green
+    * blue
+
+    == Slide 2
+
+    And some very important code
+    
+    [source,python]  
+    ----
+    >>> print "hello World"
+    ----
 
 Run `cdk` on your input file to produce a single html file you can
 open in your browser.
