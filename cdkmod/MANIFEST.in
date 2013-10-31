@@ -1,3 +1,4 @@
 recursive-include cdk/data *
+recursive-include cdk/custom *
 include README.rst
 include LICENSE
