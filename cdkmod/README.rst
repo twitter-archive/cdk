@@ -1,6 +1,6 @@
 CDK Documentation
 =================
 
-I suppose there should be some documentation here...
+Please see the docs at https://readthedocs.org/projects/cdk/
 
 
