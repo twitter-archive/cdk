@@ -126,7 +126,7 @@ def create_command(theme, bare=False, filters_list=None):
                for f in filters_list]
     filters = " ".join(filters)
 
-    cmd = " ".join(["%(ASCIIDOC_DIR)s/asciidoc.py",
+    cmd = " ".join(["python %(ASCIIDOC_DIR)s/asciidoc.py",
                     "--no-conf --conf-file=%(CUSTOM_DIR)s/asciidoc.conf",
                     backend,
                     filters,
