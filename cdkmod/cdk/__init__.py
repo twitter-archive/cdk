@@ -17,7 +17,8 @@ Arguments:
   FILE     asciidoc source file
 
 Options:
-  --install-theme <theme>      http path to zipfile containing theme. Will be unzipped in theme directory.
+  --install-theme <theme>      http path to zipfile containing theme. Will be unzipped in
+                               theme directory.
   --default-theme <theme>      Theme to be the default used theme when creating slide decks
   --theme <theme>              Theme to be used to create slide deck
   -v --verbose                 Verbose output from underlying commands
@@ -26,7 +27,8 @@ Options:
 
 """
 
-import subprocess, zipfile
+import subprocess
+import zipfile
 from os.path import dirname, basename, join, abspath, isfile, isdir, expanduser
 from os import mkdir, unlink, listdir
 from shutil import copy
@@ -44,7 +46,7 @@ def set_default_theme(theme):
     """
     Set default theme name based in config file.
     """
-    pref_init() # make sure config files exist
+    pref_init()  # make sure config files exist
     parser = cp.ConfigParser()
     parser.read(PREFS_FILE)
     # Do we need to create a section?
@@ -57,9 +59,10 @@ def set_default_theme(theme):
     copy("%s.2" % PREFS_FILE, PREFS_FILE)
     unlink("%s.2" % PREFS_FILE,)
 
+
 def pick_theme(manual):
     """
-    Return theme name based on manual input, prefs file, or default to "plain"
+    Return theme name based on manual input, prefs file, or default to "plain".
     """
     if manual:
         return manual
@@ -71,18 +74,20 @@ def pick_theme(manual):
     except (cp.NoSectionError, cp.NoOptionError):
         theme = "plain"
     return theme
-    
+
+
 def pref_init():
     """Can be called without penalty. Create ~/.cdk dir if it doesn't
     exist. Copy the default pref file if it doesn't exist."""
-    
-    # make sure we have a ~/.cdk dir 
+
+    # make sure we have a ~/.cdk dir
     if not isdir(PREFS_DIR):
         mkdir(PREFS_DIR)
     # make sure we have a default prefs file
     if not isfile(PREFS_FILE):
         copy(join(LOCATION, "custom", "prefs"), PREFS_DIR)
-        
+
+
 def install_theme(path_to_theme):
     """
     Pass a path to a theme file which will be extracted to the themes directory.
@@ -96,9 +101,10 @@ def install_theme(path_to_theme):
     zf = zipfile.ZipFile(dest)
     # should make sure zipfile contains only themename folder which doesn't conflict
     # with existing themename. Or some kind of sanity check
-    zf.extractall(THEMES_DIR) # plus this is a potential security flaw pre 2.7.4
+    zf.extractall(THEMES_DIR)  # plus this is a potential security flaw pre 2.7.4
     # remove the copied zipfile
     unlink(dest)
+
 
 def create_command(theme, bare=False, filters_list=None):
     # default filters
@@ -117,9 +123,9 @@ def create_command(theme, bare=False, filters_list=None):
         backend = "--conf-file=%(CUSTOM_DIR)s/deckjs.conf "
 
     filters = ["--conf-file=%(ASCIIDOC_DIR)s/filters/{}".format(f)
-                                            for f in filters_list]
+               for f in filters_list]
     filters = " ".join(filters)
-    
+
     cmd = " ".join(["%(ASCIIDOC_DIR)s/asciidoc.py",
                     "--no-conf --conf-file=%(CUSTOM_DIR)s/asciidoc.conf",
                     backend,
@@ -130,16 +136,18 @@ def create_command(theme, bare=False, filters_list=None):
                     "-a iconsdir=%(DATA_DIR)s/images/icons -a icons"]) % locals()
     return cmd.split()
 
+
 def run_command(cmd, args):
     if args['--verbose']:
         cmd.append('-v')
         print "\n".join(cmd) + args['FILE']
-        
+
     cmd.append(args['FILE'])
     try:
         print subprocess.check_output(cmd)
     except subprocess.CalledProcessError as e:
         exit(e.output)
+
 
 def main():
     """Entry point for choosing what subcommand to run.
@@ -163,8 +171,9 @@ def main():
         if not path.endswith(".zip"):
             exit("Theme installation currently only supports theme install from "
                  ".zip files.")
-        install_theme(path)    
+        install_theme(path)
     elif args['--default-theme']:
         set_default_theme(args['--default-theme'])
+
 if __name__ == '__main__':
     main()
