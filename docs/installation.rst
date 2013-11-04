@@ -5,6 +5,7 @@ For users
 ---------
 
 ::
+
    $ sudo easy_install cdk
 
 
