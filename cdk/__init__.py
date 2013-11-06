@@ -133,7 +133,7 @@ def create_command(theme, bare=False, filters_list=None):
                     "-b deckjs",
                     "-a deckjs_theme=%(theme)s -a data-uri",
                     "-a backend-confdir=%(CUSTOM_DIR)s",
-                    "-a iconsdir=%(DATA_DIR)s/images/icons -a icons"]) % locals()
+                    "-a iconsdir=%(DATA_DIR)s/asciidoc-8.6.8/images/icons -a icons"]) % locals()
     return cmd.split()
 
 
