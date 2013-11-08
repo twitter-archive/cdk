@@ -1,6 +1,6 @@
 Courseware Development Kit (CDK)
 =================
-
+.. image:: https://travis-ci.org/twitter/cdk.png   :target: https://travis-ci.org/twitter/cdk
 Using CDK to write documents in `AsciiDoc <http://www.methods.co.nz/asciidoc/>`_ and produce elegant single-file slidedecks as html.
 
 Please see the docs at http://cdk.readthedocs.org/en/latest/
