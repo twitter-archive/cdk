@@ -118,7 +118,7 @@ def create_command(theme, bare=False, filters_list=None):
 
     # Setup asciidoc command we want to run with backend
     if bare:
-        backend = "--conf-file=%(ASCIIDOC_DIR)s/html5.conf "
+        backend = "--conf-file=%(CUSTOM_DIR)s/html5.conf "
     else:
         backend = "--conf-file=%(CUSTOM_DIR)s/deckjs.conf "
 
