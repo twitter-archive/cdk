@@ -27,12 +27,17 @@ Options:
 
 """
 
+from __future__ import print_function
+
 import subprocess
 import zipfile
 from os.path import dirname, basename, join, abspath, isfile, isdir, expanduser
 from os import mkdir, unlink, listdir
 from shutil import copy
-import ConfigParser as cp
+try:
+    import ConfigParser as cp # Python 2
+except ImportError:
+    import configparser as cp # Python 3
 
 from docopt import docopt
 
@@ -140,11 +145,11 @@ def create_command(theme, bare=False, filters_list=None):
 def run_command(cmd, args):
     if args['--verbose']:
         cmd.append('-v')
-        print "\n".join(cmd) + args['FILE']
+        print("\n".join(cmd) + args['FILE'])
 
     cmd.append(args['FILE'])
     try:
-        print subprocess.check_output(cmd)
+        print(subprocess.check_output(cmd))
     except subprocess.CalledProcessError as e:
         exit(e.output)
 
