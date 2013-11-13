@@ -1,7 +1,12 @@
 # -*- coding: utf-8 -*-
 
 import unittest
-from StringIO import StringIO
+
+try:
+    from StringIO import StringIO
+except ImportError:
+    from io import StringIO
+    
 from .context import cdk
 
 class BasicTestSuite(unittest.TestCase):
