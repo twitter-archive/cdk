@@ -10,8 +10,10 @@ Current features list includes:
 Usage:
   cdk [-vb] FILE
   cdk --theme=<theme> FILE
+  cdk --custom-css=<cssfile> FILE
   cdk --install-theme=<theme>
   cdk --default-theme=<theme>
+
 
 Arguments:
   FILE     asciidoc source file
@@ -21,6 +23,8 @@ Options:
                                theme directory.
   --default-theme <theme>      Theme to be the default used theme when creating slide decks
   --theme <theme>              Theme to be used to create slide deck
+  --custom-css <cssfile>       Additional style rules to be added to the slide deck. You'll be responsible
+                               for packing any external resources (images, fonts, etc).
   -v --verbose                 Verbose output from underlying commands
   -b --bare                    Simple html output, no slideshow.
   -h --help                    Show this screen.
@@ -31,7 +35,8 @@ from __future__ import print_function
 
 import subprocess
 import zipfile
-from os.path import dirname, basename, join, abspath, isfile, isdir, expanduser
+from os.path import (dirname, basename, join, abspath, isfile, isdir,
+                     expanduser, splitext)
 from os import mkdir, unlink, listdir
 from shutil import copy
 try:
@@ -153,7 +158,23 @@ def run_command(cmd, args):
     except subprocess.CalledProcessError as e:
         exit(e.output)
 
-
+def add_css(source_fp, css_fp):
+    # Seek to the end the file
+    source_fp.read(-1)
+    end = "</body>\r\n</html>\r\n" 
+    source_fp.seek(source_fp.tell() - len(end))
+    # Ok, now write a style tag
+    source_fp.write('<style type="text/css">\r\n')
+    source_fp.write(css_fp.read())
+    source_fp.write("\r\n</style>\r\n" + end)
+    
+def add_css_filename(css_file, source_file):
+    basename, ext = splitext(source_file)
+    out_file = basename + ".html"
+    with open(out_file, "r+") as fp:
+        with open(css_file) as css_fp:
+            add_css(fp, css_fp)
+        
 def main():
     """Entry point for choosing what subcommand to run.
     """
@@ -168,6 +189,8 @@ def main():
             exit('Selected theme "%s" not found. Check ~/.cdk/prefs' % theme)
         cmd = create_command(theme, args['--bare'])
         run_command(cmd, args)
+        if args['--custom-css']:
+            add_css_filename(args['--custom-css'], args['FILE'])
     # other commands
     elif args['--install-theme']:
         path = args['--install-theme']
