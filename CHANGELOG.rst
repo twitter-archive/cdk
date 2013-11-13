@@ -1,6 +1,11 @@
 Changelog
 =========
 
+Changes between cdk 0.0.2 and 0.0.3
+-----------------------------------
+
+UI updates to builtin themes. Added --custom-css flag.
+
 Changes between cdk 0.0.1 and 0.0.2
 -----------------------------------
 
