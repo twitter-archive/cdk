@@ -3,7 +3,7 @@
 */
 
 table.highlighttable{ width:100%;}
-td.linenos { width: 110px;}
+td.linenos { width: 80px;}
 .highlight .hll { background-color: #ffffcc }
 .highlight .c { color: #808080 } /* Comment */
 /* .highlight .err { color: #F00000; background-color: #F0A0A0 } */  /* removing the Error class */
