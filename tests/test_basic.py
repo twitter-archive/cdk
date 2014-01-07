@@ -10,7 +10,7 @@ except ImportError:
 from .context import cdk
 
 class BasicTestSuite(unittest.TestCase):
-    """Basic test cases."""
+    """Unit tests go here!"""
     
     def test_inserting_custom_css(self):
         """Custom css means opening the produced .html and sneaking

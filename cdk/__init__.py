@@ -13,6 +13,7 @@ Usage:
   cdk --custom-css=<cssfile> FILE
   cdk --install-theme=<theme>
   cdk --default-theme=<theme>
+  cdk --generate=<name>
 
 
 Arguments:
@@ -25,6 +26,7 @@ Options:
   --theme <theme>              Theme to be used to create slide deck
   --custom-css <cssfile>       Additional style rules to be added to the slide deck. You'll be responsible
                                for packing any external resources (images, fonts, etc).
+  --generate <name>            Generate sample slide source in file name. Try "slides.asc"
   -v --verbose                 Verbose output from underlying commands
   -b --bare                    Simple html output, no slideshow.
   -h --help                    Show this screen.
@@ -39,11 +41,19 @@ from os.path import (dirname, basename, join, abspath, isfile, isdir,
                      expanduser, splitext)
 from os import mkdir, unlink, listdir
 from shutil import copy
+
+# Python version compat checks/fixes
 try:
     import ConfigParser as cp # Python 2
 except ImportError:
     import configparser as cp # Python 3
 
+try:
+    subprocess.check_output
+except AttributeError:
+    import to6
+    subprocess.check_output = to6.check_output
+    
 from docopt import docopt
 
 LOCATION = abspath(dirname(__file__))
@@ -175,9 +185,9 @@ def add_css_filename(css_file, source_file):
             add_css(fp, css_fp)
         
 def main():
-    """Entry point for choosing what subcommand to run.
     """
-
+    Entry point for choosing what subcommand to run.
+    """
     # Try parsing command line args and flags with docopt
     args = docopt(__doc__, version="cdk 0.1")
     # Am I going to need validation? No Schema for the moment...
@@ -191,6 +201,15 @@ def main():
         if args['--custom-css']:
             add_css_filename(args['--custom-css'], args['FILE'])
     # other commands
+    elif args['--generate']:
+        if isfile(args['--generate']):
+            exit("%s already exists!" % args['--generate'])
+        with open(args['--generate'], "w") as fp:
+            sample = join(LOCATION,  "custom", "sample.asc")
+            fp.write(open(sample).read())
+            print("Created sample slide deck in %s..." % args['--generate'])
+        exit()
+                     
     elif args['--install-theme']:
         path = args['--install-theme']
         if not isfile(path):
