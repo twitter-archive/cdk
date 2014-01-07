@@ -132,8 +132,7 @@ def create_command(theme, bare=False, filters_list=None):
     else:
         backend = "--conf-file=%(CUSTOM_DIR)s/deckjs.conf "
 
-    filters = ["--conf-file=%(ASCIIDOC_DIR)s/filters/{}".format(f)
-               for f in filters_list]
+    filters = ["--conf-file=%(ASCIIDOC_DIR)s/filters/{0}".format(f) for f in filters_list]
     filters = " ".join(filters)
 
     cmd = " ".join(["python %(ASCIIDOC_DIR)s/asciidoc.py",
