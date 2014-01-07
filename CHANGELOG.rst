@@ -1,6 +1,13 @@
 Changelog
 =========
 
+Changes between cdk 1.0.2 and 1.0.1
+-----------------------------------
+
+Tox helps me figure out I can support 2.6 but don't support 3.3 if
+asciidoc.py doesn't.
+
+
 Changes between cdk 1.0.1 and 1.0.0
 -----------------------------------
 
