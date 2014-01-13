@@ -2,7 +2,7 @@ init:
 	pip install -r requirements.txt --use-mirrors
 
 test:
-	nosetests tests
+	py.test
 
 build:
 	python setup.py sdist
