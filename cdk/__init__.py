@@ -8,7 +8,7 @@ Current features list includes:
  * single file output thanks to data:uri
 
 Usage:
-  cdk [-vb] FILE
+  cdk [-vb] [--toc] FILE
   cdk --theme=<theme> FILE
   cdk --custom-css=<cssfile> FILE
   cdk --install-theme=<theme>
@@ -29,6 +29,7 @@ Options:
   --generate <name>            Generate sample slide source in file name. Try "slides.asc"
   -v --verbose                 Verbose output from underlying commands
   -b --bare                    Simple html output, no slideshow.
+  --toc                        Add toc to output. Typically used with -b
   -h --help                    Show this screen.
 
 """
@@ -126,7 +127,7 @@ def install_theme(path_to_theme):
     unlink(dest)
 
 
-def create_command(theme, bare=False, filters_list=None):
+def create_command(theme, bare=False, toc=False, filters_list=None):
     # default filters
     if not filters_list:
         filters_list = ["source/source-highlight-filter.conf",
@@ -142,6 +143,9 @@ def create_command(theme, bare=False, filters_list=None):
     else:
         backend = "--conf-file=%(CUSTOM_DIR)s/deckjs.conf "
 
+    toc_directive = ''
+    if toc:
+        toc_directive = '-a toc -a numbered'
     filters = ["--conf-file=%(ASCIIDOC_DIR)s/filters/{0}".format(f) for f in filters_list]
     filters = " ".join(filters)
 
@@ -152,6 +156,7 @@ def create_command(theme, bare=False, filters_list=None):
                     "-b deckjs",
                     "-a deckjs_theme=%(theme)s -a data-uri",
                     "-a backend-confdir=%(CUSTOM_DIR)s",
+                    toc_directive,
                     "-a iconsdir=%(DATA_DIR)s/asciidoc-8.6.8/images/icons -a icons"]) % locals()
     return cmd.split()
 
@@ -196,7 +201,7 @@ def main():
         theme = pick_theme(args['--theme'])
         if theme not in listdir(THEMES_DIR):
             exit('Selected theme "%s" not found. Check ~/.cdk/prefs' % theme)
-        cmd = create_command(theme, args['--bare'])
+        cmd = create_command(theme, args['--bare'], args['--toc'])
         run_command(cmd, args)
         if args['--custom-css']:
             add_css_filename(args['--custom-css'], args['FILE'])
