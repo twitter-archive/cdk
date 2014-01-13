@@ -23,5 +23,11 @@ class BasicTestSuite(unittest.TestCase):
         out = '<p>a bunch of</p> html<style type="text/css">\r\nMy rules\r\n</style>\r\n</body>\r\n</html>\r\n'
         self.assertEqual(out, source_fp.read())
 
+    def test_toc_gets_numbered(self):
+        cmd = cdk.create_command("basic", toc=True)
+        cmd = " ".join(cmd)
+        
+        assert "-a toc -a numbered" in cmd
+
 if __name__ == '__main__':
     unittest.main()
