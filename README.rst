@@ -13,7 +13,7 @@ Installation & Usage
 
 ::
 
-    sudo pip cdk # if you don't have pip, sudo easy_install cdk
+    sudo pip cdk # if you don't have pip try sudo easy_install cdk
     cdk --generate=sample.asc # generate a sample presentation
     cdk sample.asc  # compile it to html
     open sample.html # use a browser
