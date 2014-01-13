@@ -4,8 +4,8 @@ Changelog
 Changes between cdk 1.0.3 and 1.0.2
 -----------------------------------
 
-Add --toc option to generate numbered table of contents in -b plain
-doc version of the generated documents.
+Fixed svg embedding and added --toc option to generate numbered table
+of contents in -b plain doc version of the generated documents.
 
 
 Changes between cdk 1.0.2 and 1.0.1
