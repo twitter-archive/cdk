@@ -8,12 +8,13 @@ Use CDK to write documents in `AsciiDoc <http://www.methods.co.nz/asciidoc/>`_ a
 
 Please see the docs at http://cdk.readthedocs.org/en/latest/
 
-Installation 
--------- 
+Installation & Usage
+--------------------
   
-* sudo easy_install cdk
-* cdk my_presentation.asc
-* open my_presentation.html
+    sudo pip cdk # if you don't have pip, sudo easy_install cdk
+    cdk --generate=sample.asc # generate a sample presentation
+    cdk sample.asc  # compile it to html
+    open sample.html # use a browser
 
 Contact 
 -------- 
