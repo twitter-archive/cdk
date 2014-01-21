@@ -1,6 +1,11 @@
 Changelog
 =========
 
+Changes between cdk 1.0.4 and 1.0.3
+-----------------------------------
+
+Fixed bug where long slides make every slide have a scrollbar.
+
 Changes between cdk 1.0.3 and 1.0.2
 -----------------------------------
 
