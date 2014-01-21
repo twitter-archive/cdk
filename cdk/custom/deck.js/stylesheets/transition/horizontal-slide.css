@@ -1,4 +1,6 @@
-
+html {
+  overflow: hidden;
+}
 .csstransitions.csstransforms {
   overflow-x: hidden;
 }
