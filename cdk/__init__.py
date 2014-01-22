@@ -8,7 +8,7 @@ Current features list includes:
  * single file output thanks to data:uri
 
 Usage:
-  cdk [-vb] [--toc] FILE
+  cdk [-vb] [--toc] [--notransition] FILE
   cdk --theme=<theme> FILE
   cdk --custom-css=<cssfile> FILE
   cdk --install-theme=<theme>
@@ -29,7 +29,8 @@ Options:
   --generate <name>            Generate sample slide source in file name. Try "slides.asc"
   -v --verbose                 Verbose output from underlying commands
   -b --bare                    Simple html output, no slideshow.
-  --toc                        Add toc to output. Typically used with -b
+  --toc                        Add Table of Contents to output. Typically used with -b
+  --notransition               Don't use transitions between slides.
   -h --help                    Show this screen.
 
 """
@@ -127,7 +128,7 @@ def install_theme(path_to_theme):
     unlink(dest)
 
 
-def create_command(theme, bare=False, toc=False, filters_list=None):
+def create_command(theme, bare=False, toc=False, notransition=False,filters_list=None):
     # default filters
     if not filters_list:
         filters_list = ["source/source-highlight-filter.conf",
@@ -146,6 +147,9 @@ def create_command(theme, bare=False, toc=False, filters_list=None):
     toc_directive = ''
     if toc:
         toc_directive = '-a toc -a numbered'
+    transition = ''
+    if notransition:
+        transition = '-a notransition'
     filters = ["--conf-file=%(ASCIIDOC_DIR)s/filters/{0}".format(f) for f in filters_list]
     filters = " ".join(filters)
 
@@ -153,6 +157,7 @@ def create_command(theme, bare=False, toc=False, filters_list=None):
                     "--no-conf --conf-file=%(CUSTOM_DIR)s/asciidoc.conf",
                     backend,
                     filters,
+                    transition,
                     "-b deckjs",
                     "-a deckjs_theme=%(theme)s -a data-uri",
                     "-a backend-confdir=%(CUSTOM_DIR)s",
@@ -191,7 +196,7 @@ def add_css_filename(css_file, source_file):
         
 def main():
     """
-    Entry point for choosing what subcommand to run.
+    Entry point for choosing what subcommand to run. Really should be using asciidocapi
     """
     # Try parsing command line args and flags with docopt
     args = docopt(__doc__, version="cdk 0.1")
@@ -201,7 +206,7 @@ def main():
         theme = pick_theme(args['--theme'])
         if theme not in listdir(THEMES_DIR):
             exit('Selected theme "%s" not found. Check ~/.cdk/prefs' % theme)
-        cmd = create_command(theme, args['--bare'], args['--toc'])
+        cmd = create_command(theme, args['--bare'], args['--toc'], args['--notransition'])
         run_command(cmd, args)
         if args['--custom-css']:
             add_css_filename(args['--custom-css'], args['FILE'])

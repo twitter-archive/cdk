@@ -1,6 +1,12 @@
 Changelog
 =========
 
+Changes between cdk 1.0.5 and 1.0.4
+-----------------------------------
+
+Added `--notransition` flag.
+
+
 Changes between cdk 1.0.4 and 1.0.3
 -----------------------------------
 
