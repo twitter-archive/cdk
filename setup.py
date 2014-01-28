@@ -13,7 +13,7 @@ with open('LICENSE') as f:
 
 setup(
     name='cdk',
-    version='1.0.5',
+    version='1.0.6',
     description='Courseware Developement Kit based on asciidoc and deck.js',
     long_description=readme,
     author='Simeon Franklin',
@@ -22,7 +22,7 @@ setup(
     license=license,
     packages=find_packages(exclude=('tests', 'docs')),
     include_package_data=True,
-    entry_points = {'console_scripts': ['cdk = cdk:main']},
+    entry_points = {'console_scripts': ['cdk = cdk:main', 'b64 = cdk.b64:run']},
     install_requires=['docopt', 'pygments'],
     classifiers=[
         "Development Status :: 3 - Alpha",

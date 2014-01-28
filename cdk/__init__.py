@@ -1,20 +1,12 @@
 # -*- coding: utf-8 -*-
-"""
-cdk - course development toolkit. Convert asciidoc input to deck.js
-slidedecks with many code/development oriented features.
-
-Current features list includes:
-
- * single file output thanks to data:uri
+"""cdk - course development toolkit. Convert asciidoc input to deck.js slidedecks with many
+code/development oriented features.
 
 Usage:
-  cdk [-vb] [--toc] [--notransition] FILE
-  cdk --theme=<theme> FILE
-  cdk --custom-css=<cssfile> FILE
+  cdk [-vb] [--toc] [--notransition] [--logo=<logo>] [--theme=<theme>] [--custom-css=<cssfile>] FILE
   cdk --install-theme=<theme>
   cdk --default-theme=<theme>
   cdk --generate=<name>
-
 
 Arguments:
   FILE     asciidoc source file
@@ -24,6 +16,8 @@ Options:
                                theme directory.
   --default-theme <theme>      Theme to be the default used theme when creating slide decks
   --theme <theme>              Theme to be used to create slide deck
+  --logo <logo>                Logo file to be used in theme. Logo should be ~200x200px image.
+                               Guaranteed support only in "plain" theme.
   --custom-css <cssfile>       Additional style rules to be added to the slide deck. You'll be responsible
                                for packing any external resources (images, fonts, etc).
   --generate <name>            Generate sample slide source in file name. Try "slides.asc"
@@ -128,7 +122,7 @@ def install_theme(path_to_theme):
     unlink(dest)
 
 
-def create_command(theme, bare=False, toc=False, notransition=False,filters_list=None):
+def create_command(theme, bare=False, toc=False, notransition=False, logo=None, filters_list=None):
     # default filters
     if not filters_list:
         filters_list = ["source/source-highlight-filter.conf",
@@ -150,6 +144,9 @@ def create_command(theme, bare=False, toc=False, notransition=False,filters_list
     transition = ''
     if notransition:
         transition = '-a notransition'
+    logo_directive = ''
+    if logo:
+        logo_directive = '-a logo=%(logo)s'
     filters = ["--conf-file=%(ASCIIDOC_DIR)s/filters/{0}".format(f) for f in filters_list]
     filters = " ".join(filters)
 
@@ -161,6 +158,7 @@ def create_command(theme, bare=False, toc=False, notransition=False,filters_list
                     "-b deckjs",
                     "-a deckjs_theme=%(theme)s -a data-uri",
                     "-a backend-confdir=%(CUSTOM_DIR)s",
+                    logo_directive,
                     toc_directive,
                     "-a iconsdir=%(DATA_DIR)s/asciidoc-8.6.8/images/icons -a icons"]) % locals()
     return cmd.split()
@@ -199,14 +197,14 @@ def main():
     Entry point for choosing what subcommand to run. Really should be using asciidocapi
     """
     # Try parsing command line args and flags with docopt
-    args = docopt(__doc__, version="cdk 0.1")
+    args = docopt(__doc__, version="cdk")
     # Am I going to need validation? No Schema for the moment...
     if args['FILE']:
         # Great! Run asciidoc with appropriate flags
         theme = pick_theme(args['--theme'])
         if theme not in listdir(THEMES_DIR):
             exit('Selected theme "%s" not found. Check ~/.cdk/prefs' % theme)
-        cmd = create_command(theme, args['--bare'], args['--toc'], args['--notransition'])
+        cmd = create_command(theme, args['--bare'], args['--toc'], args['--notransition'], args['--logo'])
         run_command(cmd, args)
         if args['--custom-css']:
             add_css_filename(args['--custom-css'], args['FILE'])
