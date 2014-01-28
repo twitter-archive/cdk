@@ -28,7 +28,7 @@
                var slide = $('#title-slide');
            }
            if(slide.height() > $body.height()){
-               $html.css('overflow', 'scroll');
+               $html.css({'overflow': 'auto', 'overflow-x':'hidden'});
            }else{
                $html.css('overflow', 'hidden');
            }
