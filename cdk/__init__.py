@@ -18,8 +18,8 @@ Options:
   --theme <theme>              Theme to be used to create slide deck
   --logo <logo>                Logo file to be used in theme. Logo should be ~200x200px image.
                                Guaranteed support only in "plain" theme.
-  --custom-css <cssfile>       Additional style rules to be added to the slide deck. You'll be responsible
-                               for packing any external resources (images, fonts, etc).
+  --custom-css <cssfile>       Additional style rules to be added to the slide deck. You'll be
+                               responsible for packing any external resources (images, fonts, etc).
   --generate <name>            Generate sample slide source in file name. Try "slides.asc"
   -v --verbose                 Verbose output from underlying commands
   -b --bare                    Simple html output, no slideshow.
@@ -43,16 +43,16 @@ from shutil import copy
 
 # Python version compat checks/fixes
 try:
-    import ConfigParser as cp # Python 2
+    import ConfigParser as cp  # Python 2
 except ImportError:
-    import configparser as cp # Python 3
+    import configparser as cp  # Python 3
 
 try:
     subprocess.check_output
 except AttributeError:
     import to6
     subprocess.check_output = to6.check_output
-    
+
 from docopt import docopt
 
 LOCATION = abspath(dirname(__file__))
@@ -178,25 +178,29 @@ def run_command(cmd, args):
     except subprocess.CalledProcessError as e:
         exit(e.output)
 
+
 def add_css(source_fp, css):
     # Seek to the end the file
     source_fp.read(-1)
-    end = "</body>\r\n</html>\r\n" 
+    end = "</body>\r\n</html>\r\n"
     source_fp.seek(source_fp.tell() - len(end))
     # Ok, now write a style tag
     source_fp.write('<style type="text/css">\r\n')
     source_fp.write(css)
     source_fp.write("\r\n</style>\r\n" + end)
-    
+
+
 def add_css_filename(css_file, source_file):
     with open(out_file, "r+") as fp:
         with open(css_file) as css_fp:
             add_css(fp, css_fp.read())
-            
+
+
 def output_file(source_file):
     basename, ext = splitext(source_file)
     return basename + ".html"
-    
+
+
 def main():
     """
     Entry point for choosing what subcommand to run. Really should be using asciidocapi
@@ -210,14 +214,16 @@ def main():
         theme = pick_theme(args['--theme'])
         if theme not in listdir(THEMES_DIR):
             exit('Selected theme "%s" not found. Check ~/.cdk/prefs' % theme)
-        cmd = create_command(theme, args['--bare'], args['--toc'], args['--notransition'], args['--logo'])
+        cmd = create_command(theme, args['--bare'], args['--toc'], args['--notransition'],
+                             args['--logo'])
         run_command(cmd, args)
         if args['--custom-css']:
             add_css_filename(args['--custom-css'], out)
         if args['--open']:
             webbrowser.open("file://" + abspath(out))
         if args['--toc']:
-          add_css(open(out, "r+"), """.deck-container .deck-toc li a span{color: #888;display:inline;}""");
+            add_css(open(out, "r+"),
+                    '.deck-container .deck-toc li a span{color: #888;display:inline;}')
     # other commands
     elif args['--generate']:
         if isfile(args['--generate']):
@@ -227,7 +233,7 @@ def main():
             fp.write(open(sample).read())
             print("Created sample slide deck in %s..." % args['--generate'])
         exit()
-                     
+
     elif args['--install-theme']:
         path = args['--install-theme']
         if not isfile(path):
