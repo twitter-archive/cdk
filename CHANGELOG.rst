@@ -1,6 +1,20 @@
 Changelog
 =========
 
+Changes between cdk 1.0.7 and 1.0.6
+-----------------------------------
+
+- Add a --open/-o flag to auto-open generated slide deck
+- Add optional section numbers to TOC with --toc flag
+- Added an iframe macro. `iframe::http://github.com/twitter[width=800,height=600]` does what
+  you'd expect.
+
+Changes between cdk 1.0.6 and 1.0.5
+-----------------------------------
+
+CSS bug fixes
+
+
 Changes between cdk 1.0.5 and 1.0.4
 -----------------------------------
 
