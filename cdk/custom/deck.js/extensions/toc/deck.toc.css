@@ -20,7 +20,7 @@
     font-size: 1em; }
     .deck-container .deck-toc ul li {
       white-space: nowrap;
-      padding-left: 1.5em;
+      padding-left: 0.8em;
       font-weight: normal; }
       .deck-container .deck-toc ul li#toc-0 {
         font-weight: bold;
@@ -38,3 +38,6 @@
 @media print {
   .deck-toc {
     display: none; } }
+
+
+.deck-container .deck-toc li a span{color: #888;display:none;}

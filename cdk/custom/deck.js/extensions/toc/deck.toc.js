@@ -1,4 +1,4 @@
-/*!
+/*
 Deck JS - deck.toc
 Copyright (c) 2011 Remi BARRAQUAND
 Dual licensed under the MIT license and GPL license.
@@ -136,7 +136,7 @@ This module provides a support for TOC to the deck.
             //var tocElementFound = false;
             
             /* If there is a toc item, push it in the TOC */
-            for(var level=1; level<6; level++) {
+            for(var level=1; level<3; level++) {
                 if( slide.children("h"+level).length > 0) {
                     var tocTitle = "";
                     var $tocElement = slide.children("h"+level+":first");
@@ -145,6 +145,10 @@ This module provides a support for TOC to the deck.
                     } else {
                         tocTitle = $tocElement.text();
                     }
+                    // actually level isn't based on h1, h2, h3, etc yet. Look at parent slide to see if slide0 or slide1
+                    if(slide.hasClass('slide1')){
+                        level = level + 1
+                        }
                     $toc.push(level, tocTitle, slide);
                     $toc.tag(slide);
                     //tocElementFound = true;
@@ -205,7 +209,23 @@ This module provides a support for TOC to the deck.
     var TOC = function() {
         
         this.root = $("<ul/>", {"class":"toc"});
-            
+
+
+        /**
+         * Tranform a path listing [0,0,1]
+         * into a title like "1.2".
+         * 
+         * indexes go from 0 to 1 based counting and the
+         * first one doesn't count.
+         */
+        var list_to_listing = function(a){
+         var title = [];
+         for(var i=1;i<a.length;i++)  {
+            title.push(a[i] + 1);
+         } 
+         return title.join(".");
+        }
+        
         /* 
             Push new item in the TOC 
           
@@ -215,7 +235,6 @@ This module provides a support for TOC to the deck.
             */
         this.push = function(depth,title,slide) {
             inc(depth);
-                
             /* Create toc element */
             var $tocElm = $("<li />", {
                 id: "toc-"+($c.join('-'))
@@ -224,7 +243,7 @@ This module provides a support for TOC to the deck.
                 title: title
             }).append($("<a />", { // create an hyperlink
                 href: "#"+$(slide).attr('id'),
-                text: title
+                html: "<span>" + list_to_listing($c) + "</span> " + title
             })).append($("<ul />"));
                                 
             /* insert it at the right place */
@@ -262,7 +281,7 @@ This module provides a support for TOC to the deck.
             
             return $context;
         }
-            
+
         /* cursor */
         var $c = [-1];
         function inc(depth) {

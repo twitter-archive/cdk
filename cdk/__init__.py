@@ -24,7 +24,8 @@ Options:
   -v --verbose                 Verbose output from underlying commands
   -b --bare                    Simple html output, no slideshow.
   -o --open                    Open the compiled slide presentation automatically
-  --toc                        Add Table of Contents to output. Typically used with -b
+  --toc                        Add Table of Contents to output. Typically used with -b. When used
+                               on normal slide deck adds section numbers to pop-up TOC.
   --notransition               Don't use transitions between slides.
   -h --help                    Show this screen.
 
@@ -177,23 +178,25 @@ def run_command(cmd, args):
     except subprocess.CalledProcessError as e:
         exit(e.output)
 
-def add_css(source_fp, css_fp):
+def add_css(source_fp, css):
     # Seek to the end the file
     source_fp.read(-1)
     end = "</body>\r\n</html>\r\n" 
     source_fp.seek(source_fp.tell() - len(end))
     # Ok, now write a style tag
     source_fp.write('<style type="text/css">\r\n')
-    source_fp.write(css_fp.read())
+    source_fp.write(css)
     source_fp.write("\r\n</style>\r\n" + end)
     
 def add_css_filename(css_file, source_file):
-    basename, ext = splitext(source_file)
-    out_file = basename + ".html"
     with open(out_file, "r+") as fp:
         with open(css_file) as css_fp:
-            add_css(fp, css_fp)
-        
+            add_css(fp, css_fp.read())
+            
+def output_file(source_file):
+    basename, ext = splitext(source_file)
+    return basename + ".html"
+    
 def main():
     """
     Entry point for choosing what subcommand to run. Really should be using asciidocapi
@@ -202,6 +205,7 @@ def main():
     args = docopt(__doc__, version="cdk")
     # Am I going to need validation? No Schema for the moment...
     if args['FILE']:
+        out = output_file(args['FILE'])
         # Great! Run asciidoc with appropriate flags
         theme = pick_theme(args['--theme'])
         if theme not in listdir(THEMES_DIR):
@@ -209,10 +213,11 @@ def main():
         cmd = create_command(theme, args['--bare'], args['--toc'], args['--notransition'], args['--logo'])
         run_command(cmd, args)
         if args['--custom-css']:
-            add_css_filename(args['--custom-css'], args['FILE'])
+            add_css_filename(args['--custom-css'], out)
         if args['--open']:
-            basename, ext = splitext(args['FILE'])
-            webbrowser.open("file://" + abspath(basename + ".html"))
+            webbrowser.open("file://" + abspath(out))
+        if args['--toc']:
+          add_css(open(out, "r+"), """.deck-container .deck-toc li a span{color: #888;display:inline;}""");
     # other commands
     elif args['--generate']:
         if isfile(args['--generate']):
