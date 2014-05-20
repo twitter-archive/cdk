@@ -3,7 +3,7 @@
 code/development oriented features.
 
 Usage:
-  cdk [-vb] [--toc] [--notransition] [--logo=<logo>] [--theme=<theme>] [--custom-css=<cssfile>] FILE
+  cdk [-vbo] [--toc] [--notransition] [--logo=<logo>] [--theme=<theme>] [--custom-css=<cssfile>] FILE
   cdk --install-theme=<theme>
   cdk --default-theme=<theme>
   cdk --generate=<name>
@@ -23,6 +23,7 @@ Options:
   --generate <name>            Generate sample slide source in file name. Try "slides.asc"
   -v --verbose                 Verbose output from underlying commands
   -b --bare                    Simple html output, no slideshow.
+  -o --open                    Open the compiled slide presentation automatically
   --toc                        Add Table of Contents to output. Typically used with -b
   --notransition               Don't use transitions between slides.
   -h --help                    Show this screen.
@@ -32,6 +33,7 @@ Options:
 from __future__ import print_function
 
 import subprocess
+import webbrowser
 import zipfile
 from os.path import (dirname, basename, join, abspath, isfile, isdir,
                      expanduser, splitext)
@@ -208,6 +210,9 @@ def main():
         run_command(cmd, args)
         if args['--custom-css']:
             add_css_filename(args['--custom-css'], args['FILE'])
+        if args['--open']:
+            basename, ext = splitext(args['FILE'])
+            webbrowser.open("file://" + abspath(basename + ".html"))
     # other commands
     elif args['--generate']:
         if isfile(args['--generate']):
