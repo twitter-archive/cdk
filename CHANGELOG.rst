@@ -1,7 +1,7 @@
 Changelog
 =========
 
-Changes between cdk 1.0.7 and 1.0.6
+Changes between cdk 1.0.8 and 1.0.6
 -----------------------------------
 
 - Add a --open/-o flag to auto-open generated slide deck
