@@ -1,33 +1,44 @@
-Installing
-==========
+Installing `cdk`
+================
 
-For users
----------
+`cdk` can be installed with standard Python packaging tools. Even if you
+are not a Python developer you likely have them installed on Linux or
+OSX systems.
+
+Using `pip`
+-----------
+
+Just run
 
 ::
 
-   $ sudo pip cdk
+   $ sudo pip install cdk
 
-Or if you don't have pip
+Using `easy_install`
+--------------------
+
+If you don't have `pip` you may have an older tool called `easy_install`. Try 
 
 ::
    
    $ sudo easy_install cdk
 
-For contributors
-----------------
+Manual Installation
+-------------------
 
-Check the source out of github. Notice the `cdk/data` directory is empty - run ::
+If you don't have any standard Python installation tools available you
+can download the latest installation bundle from https://pypi.python.org/pypi/cdk/1.0.8
 
-  make getdata
+Unzip the tarball, cd insto the resulting directory and run::
 
-To download the many (non pip-installable) external dependencies.
+  $ python setup.py install
 
-`cdk/__init__.py` is the setuptools entry point. You can run ::
+Upgrading an existing installation
+----------------------------------
 
-  python cdk/__init__.py --generate=sample.asc
+If you already have `cdk` installed you can upgrade to the latest version at any time by running::
 
-to get the same command.
+   $ sudo pip install --upgrade cdk
 
 
 
