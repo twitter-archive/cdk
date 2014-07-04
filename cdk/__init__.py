@@ -179,21 +179,21 @@ def run_command(cmd, args):
         exit(e.output)
 
 
-def add_css(source_fp, css):
-    # Seek to the end the file
-    source_fp.read(-1)
-    end = "</body>\r\n</html>\r\n"
-    source_fp.seek(source_fp.tell() - len(end))
-    # Ok, now write a style tag
-    source_fp.write('<style type="text/css">\r\n')
-    source_fp.write(css)
-    source_fp.write("\r\n</style>\r\n" + end)
+def add_css(out, css):
+    with open(out, "r+") as source_fp:
+        # Seek to the end the file
+        source_fp.read(-1)
+        end = "</body>\r\n</html>\r\n"
+        source_fp.seek(source_fp.tell() - len(end))
+        # Ok, now write a style tag
+        source_fp.write('<style type="text/css">\r\n')
+        source_fp.write(css)
+        source_fp.write("\r\n</style>\r\n" + end)
 
 
-def add_css_filename(css_file, source_file):
-    with open(out_file, "r+") as fp:
-        with open(css_file) as css_fp:
-            add_css(fp, css_fp.read())
+def add_css_file(out, css_file):
+    with open(css_file) as css_fp:
+        add_css(out, css_fp.read())
 
 
 def output_file(source_file):
@@ -218,12 +218,12 @@ def main():
                              args['--logo'])
         run_command(cmd, args)
         if args['--custom-css']:
-            add_css_filename(args['--custom-css'], out)
+            add_css_file(out, args['--custom-css'])
         if args['--open']:
             webbrowser.open("file://" + abspath(out))
         if args['--toc']:
-            add_css(open(out, "r+"),
-                    '.deck-container .deck-toc li a span{color: #888;display:inline;}')
+            add_css(out '.deck-container .deck-toc li a span{color: #888;display:inline;}')
+
     # other commands
     elif args['--generate']:
         if isfile(args['--generate']):
