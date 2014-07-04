@@ -33,6 +33,6 @@ getdata:
 
 clean:
 	python setup.py clean
-	find . -iname '*~' | xargs rm
+	find . -iname '*~' -delete
 	rm -rf dist
 	rm -rf cdk.egg-info
