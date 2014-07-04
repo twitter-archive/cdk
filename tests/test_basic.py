@@ -17,8 +17,7 @@ class BasicTestSuite(unittest.TestCase):
         a style tag before the closing </body> tag."""
         
         source_fp = StringIO('<p>a bunch of</p> html</body>\r\n</html>\r\n')
-        css_fp = StringIO('My rules')
-        cdk.add_css(source_fp, css_fp.read())
+        cdk.add_css_to_stream(source_fp, 'My rules')
         source_fp.seek(0)
         out = '<p>a bunch of</p> html<style type="text/css">\r\nMy rules\r\n</style>\r\n</body>\r\n</html>\r\n'
         self.assertEqual(out, source_fp.read())

@@ -179,17 +179,20 @@ def run_command(cmd, args):
         exit(e.output)
 
 
-def add_css(out, css):
-    with open(out, "r+") as source_fp:
-        # Seek to the end the file
-        source_fp.read(-1)
-        end = "</body>\r\n</html>\r\n"
-        source_fp.seek(source_fp.tell() - len(end))
-        # Ok, now write a style tag
-        source_fp.write('<style type="text/css">\r\n')
-        source_fp.write(css)
-        source_fp.write("\r\n</style>\r\n" + end)
+# Low-level functionality, exposed for easier testing.
+def add_css_to_stream(out, css):
+    # Seek to the end the file
+    out.read(-1)
+    end = "</body>\r\n</html>\r\n"
+    out.seek(out.tell() - len(end))
+    # Ok, now write a style tag
+    out.write('<style type="text/css">\r\n')
+    out.write(css)
+    out.write("\r\n</style>\r\n" + end)
 
+def add_css(out_file, css):
+    with open(out_file, "r+") as out:
+        add_css_to_stream(out, css)
 
 def add_css_file(out, css_file):
     with open(css_file) as css_fp:
