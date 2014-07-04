@@ -219,11 +219,12 @@ def main():
         run_command(cmd, args)
         if args['--custom-css']:
             add_css_filename(args['--custom-css'], out)
-        if args['--open']:
-            webbrowser.open("file://" + abspath(out))
         if args['--toc']:
             add_css(open(out, "r+"),
                     '.deck-container .deck-toc li a span{color: #888;display:inline;}')
+        if args['--open']:
+            webbrowser.open("file://" + abspath(out))
+
     # other commands
     elif args['--generate']:
         if isfile(args['--generate']):
