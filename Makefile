@@ -33,6 +33,7 @@ getdata:
 
 clean:
 	python setup.py clean
-	find . -iname '*~' -delete
+	find . -name '*~' -delete
+	find . -name '*.pyc' -delete
 	rm -rf dist
 	rm -rf cdk.egg-info
