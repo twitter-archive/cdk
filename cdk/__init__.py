@@ -218,7 +218,7 @@ def main():
                              args['--logo'])
         run_command(cmd, args)
         if args['--toc']:
-            add_css(out '.deck-container .deck-toc li a span{color: #888;display:inline;}')
+            add_css(out, '.deck-container .deck-toc li a span{color: #888;display:inline;}')
         if args['--custom-css']:
             add_css_file(out, args['--custom-css'])
         if args['--open']:
