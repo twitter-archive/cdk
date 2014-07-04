@@ -222,7 +222,7 @@ def main():
         if args['--open']:
             webbrowser.open("file://" + abspath(out))
         if args['--toc']:
-            add_css(out '.deck-container .deck-toc li a span{color: #888;display:inline;}')
+            add_css(out, '.deck-container .deck-toc li a span{color: #888;display:inline;}')
 
     # other commands
     elif args['--generate']:
