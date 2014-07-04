@@ -217,10 +217,10 @@ def main():
         cmd = create_command(theme, args['--bare'], args['--toc'], args['--notransition'],
                              args['--logo'])
         run_command(cmd, args)
-        if args['--custom-css']:
-            add_css_file(out, args['--custom-css'])
         if args['--toc']:
             add_css(out, '.deck-container .deck-toc li a span{color: #888;display:inline;}')
+        if args['--custom-css']:
+            add_css_file(out, args['--custom-css'])
         if args['--open']:
             webbrowser.open("file://" + abspath(out))
 
