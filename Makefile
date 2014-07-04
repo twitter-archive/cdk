@@ -15,6 +15,10 @@ test:
 build: getdata
 	python setup.py sdist
 
+install:
+	cd dist/; tar xzf cdk-1.0.8.tar.gz
+	cd dist/cdk-1.0.8; sudo python setup.py install
+
 getdata: $(datadir) $(data)
 
 $(datadir):
@@ -56,4 +60,4 @@ really-clean: clean cleandata
 cleandata:
 	rm -rf $(datadir)
 
-.PHONY: init build test getdata clean cleandata really-clean
+.PHONY: init build test install getdata clean cleandata really-clean
