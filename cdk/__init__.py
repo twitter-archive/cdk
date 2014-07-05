@@ -33,6 +33,7 @@ Options:
 
 from __future__ import print_function
 
+import os
 import subprocess
 import webbrowser
 import zipfile
@@ -181,14 +182,21 @@ def run_command(cmd, args):
 
 # Low-level functionality, exposed for easier testing.
 def add_css_to_stream(out, css):
-    # Seek to the end the file
-    out.read(-1)
-    end = "</body>\r\n</html>\r\n"
-    out.seek(out.tell() - len(end))
-    # Ok, now write a style tag
-    out.write('<style type="text/css">\r\n')
+    end = "</body>\n</html>\n"
+
+    # Seek to just before the end text.
+    out.seek(-1 * len(end), os.SEEK_END)
+    # check that we're looking at the right thing.
+    assert out.read() == end 
+    out.seek(-1 * len(end), os.SEEK_END)
+
+    # Write the style tag
+    out.write('<style type="text/css">\n')
     out.write(css)
-    out.write("\r\n</style>\r\n" + end)
+    out.write("\n</style>\n")
+
+    # And put the end back
+    out.write(end)
 
 def add_css(out_file, css):
     with open(out_file, "r+") as out:
