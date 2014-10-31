@@ -33,6 +33,7 @@ Options:
 
 from __future__ import print_function
 
+import os
 import subprocess
 import webbrowser
 import zipfile
@@ -179,21 +180,31 @@ def run_command(cmd, args):
         exit(e.output)
 
 
-def add_css(source_fp, css):
-    # Seek to the end the file
-    source_fp.read(-1)
-    end = "</body>\r\n</html>\r\n"
-    source_fp.seek(source_fp.tell() - len(end))
-    # Ok, now write a style tag
-    source_fp.write('<style type="text/css">\r\n')
-    source_fp.write(css)
-    source_fp.write("\r\n</style>\r\n" + end)
+# Low-level functionality, exposed for easier testing.
+def add_css_to_stream(out, css):
+    end = "</body>\n</html>\n"
 
+    # Seek to just before the end text.
+    out.seek(-1 * len(end), os.SEEK_END)
+    # check that we're looking at the right thing.
+    assert out.read() == end 
+    out.seek(-1 * len(end), os.SEEK_END)
 
-def add_css_filename(css_file, source_file):
-    with open(out_file, "r+") as fp:
-        with open(css_file) as css_fp:
-            add_css(fp, css_fp.read())
+    # Write the style tag
+    out.write('<style type="text/css">\n')
+    out.write(css)
+    out.write("\n</style>\n")
+
+    # And put the end back
+    out.write(end)
+
+def add_css(out_file, css):
+    with open(out_file, "r+") as out:
+        add_css_to_stream(out, css)
+
+def add_css_file(out, css_file):
+    with open(css_file) as css_fp:
+        add_css(out, css_fp.read())
 
 
 def output_file(source_file):
@@ -217,13 +228,13 @@ def main():
         cmd = create_command(theme, args['--bare'], args['--toc'], args['--notransition'],
                              args['--logo'])
         run_command(cmd, args)
+        if args['--toc']:
+            add_css(out, '.deck-container .deck-toc li a span{color: #888;display:inline;}')
         if args['--custom-css']:
-            add_css_filename(args['--custom-css'], out)
+            add_css_file(out, args['--custom-css'])
         if args['--open']:
             webbrowser.open("file://" + abspath(out))
-        if args['--toc']:
-            add_css(open(out, "r+"),
-                    '.deck-container .deck-toc li a span{color: #888;display:inline;}')
+
     # other commands
     elif args['--generate']:
         if isfile(args['--generate']):

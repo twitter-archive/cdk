@@ -16,11 +16,10 @@ class BasicTestSuite(unittest.TestCase):
         """Custom css means opening the produced .html and sneaking
         a style tag before the closing </body> tag."""
         
-        source_fp = StringIO('<p>a bunch of</p> html</body>\r\n</html>\r\n')
-        css_fp = StringIO('My rules')
-        cdk.add_css(source_fp, css_fp)
+        source_fp = StringIO('<p>a bunch of</p> html</body>\n</html>\n')
+        cdk.add_css_to_stream(source_fp, 'My rules')
         source_fp.seek(0)
-        out = '<p>a bunch of</p> html<style type="text/css">\r\nMy rules\r\n</style>\r\n</body>\r\n</html>\r\n'
+        out = '<p>a bunch of</p> html<style type="text/css">\nMy rules\n</style>\n</body>\n</html>\n'
         self.assertEqual(out, source_fp.read())
 
     def test_toc_gets_numbered(self):
