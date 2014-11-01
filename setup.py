@@ -13,7 +13,7 @@ with open('LICENSE') as f:
 
 setup(
     name='cdk',
-    version='1.0.8',
+    version='1.0.9',
     description='Courseware Developement Kit based on asciidoc and deck.js',
     long_description=readme,
     author='Simeon Franklin',

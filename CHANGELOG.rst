@@ -1,6 +1,11 @@
 Changelog
 =========
 
+Changes between cdk 1.0.9
+-------------------------
+
+- Bugfix adding custom css. Thanks to gigamonkey for the pull request!
+
 Changes between cdk 1.0.8 and 1.0.6
 -----------------------------------
 
