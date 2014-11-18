@@ -65,6 +65,12 @@ span.big {
 }
 .deck-container .slide h3 {
   color: #000;
+  font-size: 2.0168652718719104em;
+}
+.deck-container .slide h4 {
+  font-size: 1.8487931658825847em;
+  font-weight: bold;
+  margin-bottom: .25em;
 }
 .deck-container .slide p {
   margin-bottom: 0.5em;
@@ -677,7 +683,6 @@ td.icon {
 .deck-container .slide p {
   font-size: 1.54em;
 }
-.admonitionblock table{
-  margin:10px 0px;
+.admonitionblock table {
+  margin: 10px 0px;
 }
-
