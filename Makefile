@@ -25,7 +25,7 @@ $(datadir):
 	mkdir -p $@
 
 $(datadir)/asciidoc-8.6.8:
-	wget -O asciidoc.tar.gz http://sourceforge.net/projects/asciidoc/files/asciidoc/8.6.8/asciidoc-8.6.8.tar.gz/download
+	wget -O asciidoc.tar.gz https://sourceforge.net/projects/asciidoc/files/asciidoc/8.6.8/asciidoc-8.6.8.tar.gz/download
 	tar -xzf asciidoc.tar.gz
 	mv asciidoc-8.6.8 $@
 	rm asciidoc.tar.gz
